@@ -21,6 +21,8 @@ apply plugin: 'idea'
 apply plugin: "io.spring.dependency-management"
 apply plugin: 'jacoco'
 
+group 'com.bts'
+
 lombok {
     version = "1.16.20"
     sha256 = ""
@@ -39,14 +41,15 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     compile group: 'com.google.guava', name: 'guava', version: "${guavaVersion}"
     compile group: 'com.google.api-client', name: 'google-api-client', version: "${googleApiClientVersion}"
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testCompile group: 'org.mockito', name: 'mockito-core', version: "${mockitoVersion}"
 }
 
-dependencyManagement{
+dependencyManagement {
     imports {
         mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
     }
