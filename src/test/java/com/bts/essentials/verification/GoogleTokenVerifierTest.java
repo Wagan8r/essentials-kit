@@ -1,7 +1,7 @@
-package com.bts.verification;
+package com.bts.essentials.verification;
 
 import com.bts.BaseUnitTest;
-import com.bts.model.BasicUser;
+import com.bts.essentials.model.BasicUser;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.http.HttpTransport;

@@ -1,4 +1,4 @@
-package com.bts.model;
+package com.bts.essentials.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

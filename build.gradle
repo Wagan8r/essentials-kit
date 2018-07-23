@@ -43,8 +43,10 @@ targetCompatibility = 1.8
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     compile group: 'com.google.guava', name: 'guava', version: "${guavaVersion}"
     compile group: 'com.google.api-client', name: 'google-api-client', version: "${googleApiClientVersion}"
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: "${jjwtVersion}"
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testCompile group: 'org.mockito', name: 'mockito-core', version: "${mockitoVersion}"
 }

@@ -1,6 +1,6 @@
-package com.bts.verification;
+package com.bts.essentials.verification;
 
-import com.bts.model.BasicUser;
+import com.bts.essentials.model.BasicUser;
 
 import java.util.Optional;
 
