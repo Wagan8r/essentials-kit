@@ -1,4 +1,4 @@
-package com.bts.config;
+package com.bts.essentials.config;
 
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
