@@ -1,4 +1,4 @@
-package com.bts;
+package com.bts.essentials;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;

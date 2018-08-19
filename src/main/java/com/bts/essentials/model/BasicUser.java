@@ -12,4 +12,7 @@ public class BasicUser {
     private String email;
     private String firstName;
     private String lastName;
+
+    public BasicUser() {
+    }
 }
