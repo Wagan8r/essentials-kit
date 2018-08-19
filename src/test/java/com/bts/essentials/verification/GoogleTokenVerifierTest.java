@@ -1,15 +1,14 @@
 package com.bts.essentials.verification;
 
-import com.bts.essentials.BaseUnitTest;
+import com.bts.essentials.BaseIntegrationTest;
 import com.bts.essentials.model.BasicUser;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.security.GeneralSecurityException;
 import java.util.Optional;
@@ -22,11 +21,12 @@ import static org.mockito.Mockito.*;
 /**
  * Created by wagan8r on 7/12/18.
  */
-public class GoogleTokenVerifierTest extends BaseUnitTest {
+public class GoogleTokenVerifierTest extends BaseIntegrationTest {
     private static final String JWT = "Not really a JWT";
 
-    private HttpTransport httpTransport;
-    private JsonFactory jsonFactory;
+    private GoogleTokenVerifier googleTokenVerifierSpy;
+
+    @Autowired
     private GoogleTokenVerifier googleTokenVerifier;
 
     @Rule
@@ -34,9 +34,7 @@ public class GoogleTokenVerifierTest extends BaseUnitTest {
 
     @Before
     public void before() {
-        httpTransport = mock(HttpTransport.class);
-        jsonFactory = mock(JsonFactory.class);
-        googleTokenVerifier = spy(new GoogleTokenVerifier(httpTransport, jsonFactory));
+        googleTokenVerifierSpy = spy(googleTokenVerifier);
     }
 
     @Test
@@ -44,8 +42,8 @@ public class GoogleTokenVerifierTest extends BaseUnitTest {
         Payload payload = createPayload();
         GoogleIdToken googleIdToken = mock(GoogleIdToken.class);
         when(googleIdToken.getPayload()).thenReturn(payload);
-        doReturn(googleIdToken).when(googleTokenVerifier).verify(anyString(), eq(JWT));
-        Optional<BasicUser> userOptional = googleTokenVerifier.verifyToken(JWT);
+        doReturn(googleIdToken).when(googleTokenVerifierSpy).verify(anyString(), eq(JWT));
+        Optional<BasicUser> userOptional = googleTokenVerifierSpy.verifyToken(JWT);
         BasicUser user = userOptional.get();
         assertEquals(payload.getEmail(), user.getEmail());
         assertEquals(payload.get("given_name"), user.getFirstName());
@@ -54,16 +52,16 @@ public class GoogleTokenVerifierTest extends BaseUnitTest {
 
     @Test
     public void verifyTokenNoMatch() throws Exception {
-        doReturn(null).when(googleTokenVerifier).verify(anyString(), eq(JWT));
-        Optional<BasicUser> userOptional = googleTokenVerifier.verifyToken(JWT);
+        doReturn(null).when(googleTokenVerifierSpy).verify(anyString(), eq(JWT));
+        Optional<BasicUser> userOptional = googleTokenVerifierSpy.verifyToken(JWT);
         assertFalse(userOptional.isPresent());
     }
 
     @Test
     public void verifyTokenTokenParseError() throws Exception {
-        doThrow(GeneralSecurityException.class).when(googleTokenVerifier).verify(anyString(), eq(JWT));
+        doThrow(GeneralSecurityException.class).when(googleTokenVerifierSpy).verify(anyString(), eq(JWT));
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("Error verifying ID token");
-        googleTokenVerifier.verifyToken(JWT);
+        googleTokenVerifierSpy.verifyToken(JWT);
     }
 }

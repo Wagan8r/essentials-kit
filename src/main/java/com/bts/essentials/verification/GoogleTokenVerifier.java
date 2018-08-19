@@ -6,8 +6,8 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -22,9 +22,8 @@ import java.util.Optional;
  */
 @Component
 public class GoogleTokenVerifier implements TokenVerifier {
-    //******************************** DO NOT KEEP IN HERE ********************************
-    private static final List<String> CLIENT_IDS = ImmutableList.of("871115837782-vj0omqf5n89so84idvmsrme0k4epmidg.apps.googleusercontent.com");
-    //**** SHOULD BE STORED IN A CONFIG FILE OR SOMETHING. PERHAPS A DISCOVERY SERVICE ****
+    @Value("${essentials.token.clients.google}")
+    private List<String> clientIds;
 
     private final HttpTransport httpTransport;
     private final JsonFactory jsonFactory;
@@ -37,7 +36,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
 
     @Override
     public Optional<BasicUser> verifyToken(String token) {
-        return CLIENT_IDS.stream().map(clientId -> verifyToken(clientId, token)).filter(Objects::nonNull).findFirst();
+        return clientIds.stream().map(clientId -> verifyToken(clientId, token)).filter(Objects::nonNull).findFirst();
     }
 
     public BasicUser verifyToken(String clientId, String token) {
