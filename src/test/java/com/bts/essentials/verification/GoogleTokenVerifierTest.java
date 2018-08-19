@@ -1,6 +1,6 @@
 package com.bts.essentials.verification;
 
-import com.bts.BaseUnitTest;
+import com.bts.essentials.BaseUnitTest;
 import com.bts.essentials.model.BasicUser;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -14,6 +14,7 @@ import org.junit.rules.ExpectedException;
 import java.security.GeneralSecurityException;
 import java.util.Optional;
 
+import static com.bts.essentials.testutils.DataCreation.createPayload;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.*;
@@ -64,13 +65,5 @@ public class GoogleTokenVerifierTest extends BaseUnitTest {
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("Error verifying ID token");
         googleTokenVerifier.verifyToken(JWT);
-    }
-
-    protected Payload createPayload() {
-        Payload payload = new Payload();
-        payload.setEmail("nerfherder@bts.com");
-        payload.set("given_name", "Han");
-        payload.set("family_name", "Solo");
-        return payload;
     }
 }
