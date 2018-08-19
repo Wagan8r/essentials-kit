@@ -55,6 +55,10 @@ public class GoogleTokenVerifier implements TokenVerifier {
         return basicUser;
     }
 
+    /**
+     * Moved to its own method due to the inability to either mock GoogleIdTokenVerifier or supply a valid token at test
+     * time
+     */
     protected GoogleIdToken verify(String clientId, String token) throws GeneralSecurityException, IOException {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(httpTransport, jsonFactory)
                 .setAudience(Collections.singletonList(clientId))
