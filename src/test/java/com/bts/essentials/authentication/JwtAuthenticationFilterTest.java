@@ -35,7 +35,7 @@ public class JwtAuthenticationFilterTest extends BaseIntegrationTest {
         String jwt = jwtTokenProvider.getToken(userAuthentication);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
         HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
-        when(httpServletResponse.getHeader("Authorization")).thenReturn(String.format("Bearer %s", jwt));
+        when(httpServletRequest.getHeader("Authorization")).thenReturn(String.format("Bearer %s", jwt));
         FilterChain filterChain = mock(FilterChain.class);
         jwtAuthenticationFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
 

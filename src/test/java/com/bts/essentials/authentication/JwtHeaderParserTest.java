@@ -4,10 +4,9 @@ import com.bts.essentials.BaseIntegrationTest;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -31,9 +30,9 @@ public class JwtHeaderParserTest extends BaseIntegrationTest {
 
     @Test
     public void parseAuthHeaderHttpServletResponse() {
-        HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
-        when(httpServletResponse.getHeader("Authorization")).thenReturn("Bearer imajwt");
-        String jwt = jwtHeaderParser.parseAuthHeader(httpServletResponse);
+        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer imajwt");
+        String jwt = jwtHeaderParser.parseAuthHeader(httpServletRequest);
         assertEquals("imajwt", jwt);
     }
 
