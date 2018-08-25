@@ -3,6 +3,7 @@ package com.bts.essentials.authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -11,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class JwtHeaderParser {
 
-    public String parseAuthHeader(HttpServletResponse httpServletResponse) {
-        String authHeader = httpServletResponse.getHeader("Authorization");
+    public String parseAuthHeader(HttpServletRequest httpServletRequest) {
+        String authHeader = httpServletRequest.getHeader("Authorization");
         return parseAuthHeader(authHeader);
     }
 
