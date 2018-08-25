@@ -1,10 +1,7 @@
 package com.bts.essentials.authentication;
 
 import com.bts.essentials.BaseIntegrationTest;
-import com.bts.essentials.testutils.DataCreation;
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +10,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.bts.essentials.testutils.DataCreation.createUser;
 import static com.bts.essentials.testutils.DataCreation.createUserAuthentication;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
