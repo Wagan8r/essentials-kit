@@ -1,6 +1,7 @@
 package com.bts.essentials.authentication;
 
 import com.bts.essentials.BaseIntegrationTest;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,11 +20,18 @@ import static org.mockito.Mockito.*;
  */
 public class JwtAuthenticationFilterTest extends BaseIntegrationTest {
 
-    @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
+    private JwtHeaderParser jwtHeaderParser;
+
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
+    @Before
+    public void before() {
+        jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider);
+    }
 
     @Test
     public void doFilterInternal() throws Exception {

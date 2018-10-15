@@ -5,8 +5,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -69,5 +73,13 @@ public class JwtHeaderParserTest extends BaseIntegrationTest {
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("Authorization header is missing 'Bearer' scheme");
         jwtHeaderParser.parseAuthHeader("Barer imajwt");
+    }
+
+    @Test
+    public void composeAuthHeader() {
+        ServerHttpResponse serverHttpResponse = new ServletServerHttpResponse(mock(HttpServletResponse.class));
+        String jwt = "Not exactly a JWT";
+        jwtHeaderParser.composeAuthHeader(serverHttpResponse, jwt);
+        assertEquals(String.format("Bearer %s", jwt), serverHttpResponse.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
     }
 }
