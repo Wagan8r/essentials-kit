@@ -1,9 +1,6 @@
 package com.bts.essentials.authentication.config;
 
-import com.bts.essentials.authentication.JwtAuthenticationEntryPoint;
-import com.bts.essentials.authentication.JwtAuthenticationFilter;
-import com.bts.essentials.authentication.JwtHeaderParser;
-import com.bts.essentials.authentication.JwtTokenProvider;
+import com.bts.essentials.authentication.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.RegistrationBean;
@@ -36,9 +33,12 @@ public abstract class AbstractSecurityConfigurerAdapter extends WebSecurityConfi
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private SecurityContextSetter securityContextSetter;
+
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider);
+        return new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider, securityContextSetter);
     }
 
     /**
