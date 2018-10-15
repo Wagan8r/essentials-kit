@@ -28,9 +28,12 @@ public class JwtAuthenticationFilterTest extends BaseIntegrationTest {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private SecurityContextSetter securityContextSetter;
+
     @Before
     public void before() {
-        jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider);
+        jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider, securityContextSetter);
     }
 
     @Test
