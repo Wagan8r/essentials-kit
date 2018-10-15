@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpResponse;
 
@@ -81,5 +82,13 @@ public class JwtHeaderParserTest extends BaseIntegrationTest {
         String jwt = "Not exactly a JWT";
         jwtHeaderParser.composeAuthHeader(serverHttpResponse, jwt);
         assertEquals(String.format("Bearer %s", jwt), serverHttpResponse.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
+    }
+
+    @Test
+    public void composeAuthHeaderBodyBuilder() {
+        String jwt = "Not exactly a JWT";
+        ResponseEntity.BodyBuilder builder = jwtHeaderParser.composeAuthHeader(ResponseEntity.ok(), jwt);
+        ResponseEntity<Object> responseEntity = builder.build();
+        assertEquals(String.format("Bearer %s", jwt), responseEntity.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
     }
 }

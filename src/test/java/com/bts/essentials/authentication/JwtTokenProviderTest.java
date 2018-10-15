@@ -48,6 +48,14 @@ public class JwtTokenProviderTest extends BaseIntegrationTest {
     }
 
     @Test
+    public void getTokenInvalidPrincipal() {
+        userAuthentication.setPrincipal("Totally a junk value");
+        thrown.expect(IllegalStateException.class);
+        thrown.expectMessage("Invalid Authentication principal");
+        jwtTokenProvider.getToken(userAuthentication);
+    }
+
+    @Test
     public void getUser() {
         String jwt = jwtTokenProvider.getToken(userAuthentication);
         User jwtUser = jwtTokenProvider.getUser(jwt);
