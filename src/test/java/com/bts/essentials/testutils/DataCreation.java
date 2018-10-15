@@ -14,6 +14,7 @@ public class DataCreation {
     public static UserAuthentication createUserAuthentication() {
         UserAuthentication userAuthentication = new UserAuthentication();
         userAuthentication.setUserPrincipal(createUser());
+        userAuthentication.setAuthenticated(true);
         return userAuthentication;
     }
 
