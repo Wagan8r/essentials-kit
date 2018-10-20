@@ -22,7 +22,7 @@ import java.util.Optional;
  */
 @Component
 public class GoogleTokenVerifier implements TokenVerifier {
-    @Value("${essentials.token.clients.google}")
+    @Value("${essentials.client.ids.google}")
     private List<String> clientIds;
 
     private final HttpTransport httpTransport;

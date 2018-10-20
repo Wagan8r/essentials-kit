@@ -2,7 +2,6 @@ package com.bts.essentials.authentication;
 
 import com.bts.essentials.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
