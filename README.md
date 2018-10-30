@@ -46,6 +46,43 @@ Essentials Kit also provides a `User` object that contains a UUID `id` field. Th
 `getOrCreateUser()` method as a hook to store and retrieve users in whatever manner is appropriate for the implementing
 projects.
 
+### Properties
+There are several properties that are required to be defined in you `application.properties` file inorder to authenticate and authorize users.
+
+#### Token validators
+##### Google
+In order for tokens from Google to be validated, your
+[Google OAUTH 2.0 client ID](https://console.cloud.google.com/apis/credentials) must be specified.
+
+```
+essentials.client.ids.google=<your client ID>
+```
+
+#### JWT secret
+For generating JWTs, you'll need to specify your JWT secret.
+
+```
+essentials.jwt.secret=<your JWT secret>
+```
+
+We recommend
+[a minimum of a 256-bit key](https://auth0.com/blog/brute-forcing-hs256-is-possible-the-importance-of-using-strong-keys-to-sign-jwts/)
+for your JWT secret
+
+### Application
+Somewhere in your application, the `@ComponentScan` and `@PropertySource` annotations need to be applied. In a Spring Boot project, you would do this as follows:
+
+```
+@SpringBootApplication
+@ComponentScan("com.bts")
+@PropertySource("classpath:essentials.properties")
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
 ## Authenticating
 A request must first be submitted to a resource of your own choosing, but `/login` is a typical choice. The payload of
 the request must contain the token from one of the supported identity providers. Simply `@Autowired` the
