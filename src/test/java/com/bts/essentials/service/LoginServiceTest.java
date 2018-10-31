@@ -54,8 +54,7 @@ public class LoginServiceTest extends BaseIntegrationTest {
     @Before
     public void before() {
         tokenVerifier = mock(TokenVerifier.class);
-        List<TokenVerifier> tokenVerifiers = ImmutableList.of(tokenVerifier);
-        loginService = new LoginService(tokenVerifiers, securityContextSetter, usersService);
+        loginService = createLoginService(usersService);
     }
 
     @Test
@@ -76,6 +75,15 @@ public class LoginServiceTest extends BaseIntegrationTest {
     }
 
     @Test
+    public void getUserNoUsersService() {
+        thrown.expect(RuntimeException.class);
+        thrown.expectMessage("No UsersService bean was supplied. Create an @Autowire-able implementation");
+        mockSecurity();
+        loginService = createLoginService(null);
+        loginService.getUser(JWT);
+    }
+
+    @Test
     public void getUserInvalidToken() {
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("Invalid user token");
@@ -86,5 +94,10 @@ public class LoginServiceTest extends BaseIntegrationTest {
         BasicUser basicUser = createBasicUserObject();
         when(tokenVerifier.verifyToken(JWT)).thenReturn(Optional.of(basicUser));
         return basicUser;
+    }
+
+    protected LoginService createLoginService(UsersService usersService) {
+        List<TokenVerifier> tokenVerifiers = ImmutableList.of(tokenVerifier);
+        return new LoginService(tokenVerifiers, securityContextSetter, Optional.ofNullable(usersService));
     }
 }
