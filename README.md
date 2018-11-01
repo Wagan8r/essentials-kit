@@ -1,3 +1,6 @@
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/Wagan8r/essentials-kit.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Wagan8r/essentials-kit/alerts/)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/Wagan8r/essentials-kit.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Wagan8r/essentials-kit/context:java)
+
 # essentials-kit
 
 Essentials Kit is an opinionated implementation of [Spring Security](https://github.com/spring-projects/spring-security)
@@ -16,8 +19,7 @@ supported identity providers.
 The first step is to create an implementation of `AbstractSecurityConfigurerAdapter`. `AbstractSecurityConfigurerAdapter`
 configures the built-in JWT handling beans as well as the [`HttpSecurity`]() and the [`WebSecurity`]() from Spring. Hooks
 are provided to customize the configuration via the `configureAuthorizeRequests()` and `ignoreRequests()` methods to
-configure what the authorization requirements are placed on requests and what requests for which to ignore security
-respectively.
+configure what authorization requirements are placed on requests and what requests for which to ignore security, respectively.
 
 ```
 @Configuration
@@ -47,7 +49,8 @@ Essentials Kit also provides a `User` object that contains a UUID `id` field. Th
 projects.
 
 ### Properties
-There are several properties that are required to be defined in you `application.properties` file inorder to authenticate and authorize users.
+There are several properties that are required to be defined in your `application.properties` file in order to authenticate
+and authorize users.
 
 #### Token validators
 ##### Google
@@ -75,7 +78,7 @@ Somewhere in your application, the `@ComponentScan` and `@PropertySource` annota
 ```
 @SpringBootApplication
 @ComponentScan("com.bts")
-@PropertySource("classpath:essentials.properties")
+@PropertySource({"classpath:essentials.properties", "classpath:your-application.properties"})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -109,8 +112,8 @@ implementations in the classpath (thereby allowing custom verifiers to be writte
 successful token verification, a `User` object will be created that contains the user's basic information. Additionally, the
 user will be set as the principal in the current context of the Spring `SecurityContextHolder`.
 
-Upon exiting any `@Controller` resource method, the current security context's principal will be inspected and a newly
-generated JWT will be placed within the response's `Authorization` header.
+Upon exiting any `@Controller` resource method, the current security context's principal will be inspected and a refreshed JWT
+will be placed within the response's `Authorization` header.
 
 Requests to secured endpoints must contain an `Authorization` header using the `Bearer` scheme e.g. `"Authorization":
 "Bearer <jwt>"`. Clients making requests to resources secured by the essentials-kit should continually update their
