@@ -68,8 +68,6 @@ class TestController {
  */
 public class AbstractSecurityConfigurerAdapterTest extends BaseMvcTest {
 
-    private MockMvc mockMvc;
-
     @Autowired
     private TestAbstractSecurityConfigurerAdapter testAbstractSecurityConfigurerAdapter;
 
@@ -81,7 +79,7 @@ public class AbstractSecurityConfigurerAdapterTest extends BaseMvcTest {
 
     @Before
     public void before() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain).build();
+        initializeMockMvc();
     }
 
     @Test
