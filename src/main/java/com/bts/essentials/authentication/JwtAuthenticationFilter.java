@@ -16,20 +16,20 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtHeaderParser jwtHeaderParser;
     private final JwtTokenProvider jwtTokenProvider;
-    private final SecurityContextSetter securityContextSetter;
+    private final SecurityContextMutator securityContextMutator;
 
     @Autowired
-    public JwtAuthenticationFilter(JwtHeaderParser jwtHeaderParser, JwtTokenProvider jwtTokenProvider, SecurityContextSetter securityContextSetter) {
+    public JwtAuthenticationFilter(JwtHeaderParser jwtHeaderParser, JwtTokenProvider jwtTokenProvider, SecurityContextMutator securityContextMutator) {
         this.jwtHeaderParser = jwtHeaderParser;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.securityContextSetter = securityContextSetter;
+        this.securityContextMutator = securityContextMutator;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = jwtHeaderParser.parseAuthHeader(request);
         User user = jwtTokenProvider.getUser(jwt);
-        securityContextSetter.setAuthentication(user);
+        securityContextMutator.setAuthentication(user);
         filterChain.doFilter(request, response);
     }
 }

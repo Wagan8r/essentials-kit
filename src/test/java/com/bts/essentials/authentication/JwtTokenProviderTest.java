@@ -32,32 +32,21 @@ public class JwtTokenProviderTest extends BaseIntegrationTest {
     public ExpectedException thrown = ExpectedException.none();
 
     private User user;
-    private UserAuthentication userAuthentication;
 
     @Before
     public void before() {
         user = createUser();
-        userAuthentication = new UserAuthentication();
-        userAuthentication.setUserPrincipal(user);
     }
 
     @Test
     public void getToken() {
-        String jwt = jwtTokenProvider.getToken(userAuthentication);
+        String jwt = jwtTokenProvider.getToken(user);
         assertNotNull(jwt);
     }
 
     @Test
-    public void getTokenInvalidPrincipal() {
-        userAuthentication.setPrincipal("Totally a junk value");
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("Invalid Authentication principal");
-        jwtTokenProvider.getToken(userAuthentication);
-    }
-
-    @Test
     public void getUser() {
-        String jwt = jwtTokenProvider.getToken(userAuthentication);
+        String jwt = jwtTokenProvider.getToken(user);
         User jwtUser = jwtTokenProvider.getUser(jwt);
         assertEquals(user.getId(), jwtUser.getId());
         assertEquals(user.getEmail(), jwtUser.getEmail());
@@ -67,7 +56,7 @@ public class JwtTokenProviderTest extends BaseIntegrationTest {
 
     @Test
     public void validateJwt() {
-        String jwt = jwtTokenProvider.getToken(userAuthentication);
+        String jwt = jwtTokenProvider.getToken(user);
         jwtTokenProvider.validateJwt(jwt);
     }
 

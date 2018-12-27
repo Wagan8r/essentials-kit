@@ -1,17 +1,16 @@
 package com.bts.essentials.authentication;
 
 import com.bts.essentials.BaseIntegrationTest;
+import com.bts.essentials.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.bts.essentials.testutils.DataCreation.createUserAuthentication;
+import static com.bts.essentials.testutils.DataCreation.createUser;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -29,25 +28,25 @@ public class JwtAuthenticationFilterTest extends BaseIntegrationTest {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private SecurityContextSetter securityContextSetter;
+    private SecurityContextMutator securityContextMutator;
 
     @Before
     public void before() {
-        jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider, securityContextSetter);
+        jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider, securityContextMutator);
     }
 
     @Test
     public void doFilterInternal() throws Exception {
-        Authentication userAuthentication = createUserAuthentication();
-        String jwt = jwtTokenProvider.getToken(userAuthentication);
+        User user = createUser();
+        String jwt = jwtTokenProvider.getToken(user);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
         HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);
         when(httpServletRequest.getHeader("Authorization")).thenReturn(String.format("Bearer %s", jwt));
         FilterChain filterChain = mock(FilterChain.class);
         jwtAuthenticationFilter.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        assertEquals(userAuthentication, authentication);
+        User authenticationUser = securityContextMutator.getAuthenticationUser();
+        assertEquals(user, authenticationUser);
         verify(filterChain, times(1)).doFilter(httpServletRequest, httpServletResponse);
     }
 }

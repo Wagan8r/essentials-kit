@@ -1,6 +1,6 @@
 package com.bts.essentials.service;
 
-import com.bts.essentials.authentication.SecurityContextSetter;
+import com.bts.essentials.authentication.SecurityContextMutator;
 import com.bts.essentials.model.BasicUser;
 import com.bts.essentials.model.User;
 import com.bts.essentials.verification.TokenVerifier;
@@ -16,19 +16,19 @@ import java.util.Optional;
 @Component
 public class LoginService {
     private final List<TokenVerifier> tokenVerifiers;
-    private final SecurityContextSetter securityContextSetter;
+    private final SecurityContextMutator securityContextMutator;
     private final UsersService usersService;
 
     @Autowired()
-    public LoginService(List<TokenVerifier> tokenVerifiers, SecurityContextSetter securityContextSetter, Optional<UsersService> usersService) {
+    public LoginService(List<TokenVerifier> tokenVerifiers, SecurityContextMutator securityContextMutator, Optional<UsersService> usersService) {
         this.tokenVerifiers = tokenVerifiers;
-        this.securityContextSetter = securityContextSetter;
-        this.usersService = usersService.isPresent() ? usersService.get() : null;
+        this.securityContextMutator = securityContextMutator;
+        this.usersService = usersService.orElse(null);
     }
 
     public User login(String jwt) {
         User user = getUser(jwt);
-        securityContextSetter.setAuthentication(user);
+        securityContextMutator.setAuthentication(user);
         return user;
     }
 
