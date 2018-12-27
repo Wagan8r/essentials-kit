@@ -24,23 +24,18 @@ public class JwtTokenProvider {
     @Value("${essentials.jwt.tokenExpirationMs}")
     private Integer jwtTokenExpirationMs;
 
-    public String getToken(Authentication authentication) {
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof User) {
-            User user = (User) authentication.getPrincipal();
-            Date now = new Date();
-            Date expirationDate = new Date(now.getTime() + jwtTokenExpirationMs);
-            return Jwts.builder()
-                    .setSubject(user.getId().toString())
-                    .claim(EMAIL, user.getEmail())
-                    .claim(FIRST_NAME, user.getFirstName())
-                    .claim(LAST_NAME, user.getLastName())
-                    .setIssuedAt(now)
-                    .setExpiration(expirationDate)
-                    .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                    .compact();
-        }
-        throw new IllegalStateException("Invalid Authentication principal");
+    public String getToken(User user) {
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + jwtTokenExpirationMs);
+        return Jwts.builder()
+                .setSubject(user.getId().toString())
+                .claim(EMAIL, user.getEmail())
+                .claim(FIRST_NAME, user.getFirstName())
+                .claim(LAST_NAME, user.getLastName())
+                .setIssuedAt(now)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public User getUser(String jwt) {

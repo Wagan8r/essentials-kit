@@ -4,6 +4,7 @@ import com.bts.essentials.BaseMvcTest;
 import com.bts.essentials.authentication.JwtHeaderParser;
 import com.bts.essentials.authentication.JwtTokenProvider;
 import com.bts.essentials.authentication.advice.ExcludeJwtControllerAdvice;
+import com.bts.essentials.model.User;
 import org.apache.http.HttpHeaders;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,13 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import static com.bts.essentials.testutils.DataCreation.createUserAuthentication;
+import static com.bts.essentials.testutils.DataCreation.createUser;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -94,8 +94,8 @@ public class AbstractSecurityConfigurerAdapterTest extends BaseMvcTest {
 
     @Test
     public void filterTestPath() throws Exception {
-        Authentication userAuthentication = createUserAuthentication();
-        String jwt = jwtTokenProvider.getToken(userAuthentication);
+        User user = createUser();
+        String jwt = jwtTokenProvider.getToken(user);
         mockMvc.perform(get("/secured/resource").header(HttpHeaders.AUTHORIZATION, String.format("%s %s", JwtHeaderParser.BEARER, jwt)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -113,8 +113,8 @@ public class AbstractSecurityConfigurerAdapterTest extends BaseMvcTest {
 
     @Test
     public void jwtAdviceSetsAuthorizationHeader() throws Exception {
-        Authentication userAuthentication = createUserAuthentication();
-        String jwt = jwtTokenProvider.getToken(userAuthentication);
+        User user = createUser();
+        String jwt = jwtTokenProvider.getToken(user);
         mockMvc.perform(get("/excluded/resource").header(HttpHeaders.AUTHORIZATION, String.format("%s %s", JwtHeaderParser.BEARER, jwt)))
                 .andDo(print())
                 .andExpect(status().isOk())

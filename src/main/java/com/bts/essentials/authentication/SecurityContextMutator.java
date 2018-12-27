@@ -1,6 +1,7 @@
 package com.bts.essentials.authentication;
 
 import com.bts.essentials.model.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
  * Created by wagan8r on 10/14/18.
  */
 @Component
-public class SecurityContextSetter {
+public class SecurityContextMutator {
 
     /**
      * Sets the supplied {@link User} as the current {@link UserAuthentication}.
@@ -23,5 +24,21 @@ public class SecurityContextSetter {
         userAuthentication.setUserPrincipal(user);
         userAuthentication.setAuthenticated(true);
         SecurityContextHolder.getContext().setAuthentication(userAuthentication);
+    }
+
+    /**
+     * Gets the current {@link User} from the security context.
+     *
+     * @return The current user
+     */
+    public User getAuthenticationUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication instanceof UserAuthentication) {
+            user = ((UserAuthentication) authentication).getUserPrincipal();
+        } else if (authentication != null) {
+            throw new IllegalStateException("Invalid Authentication has been set in the security context");
+        }
+        return user;
     }
 }

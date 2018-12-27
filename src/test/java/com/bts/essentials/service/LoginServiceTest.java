@@ -1,7 +1,7 @@
 package com.bts.essentials.service;
 
 import com.bts.essentials.BaseIntegrationTest;
-import com.bts.essentials.authentication.SecurityContextSetter;
+import com.bts.essentials.authentication.SecurityContextMutator;
 import com.bts.essentials.authentication.UserAuthentication;
 import com.bts.essentials.model.BasicUser;
 import com.bts.essentials.model.User;
@@ -43,7 +43,7 @@ public class LoginServiceTest extends BaseIntegrationTest {
     private TokenVerifier tokenVerifier;
 
     @Autowired
-    private SecurityContextSetter securityContextSetter;
+    private SecurityContextMutator securityContextMutator;
 
     @Autowired
     private UsersService usersService;
@@ -98,6 +98,6 @@ public class LoginServiceTest extends BaseIntegrationTest {
 
     protected LoginService createLoginService(UsersService usersService) {
         List<TokenVerifier> tokenVerifiers = ImmutableList.of(tokenVerifier);
-        return new LoginService(tokenVerifiers, securityContextSetter, Optional.ofNullable(usersService));
+        return new LoginService(tokenVerifiers, securityContextMutator, Optional.ofNullable(usersService));
     }
 }

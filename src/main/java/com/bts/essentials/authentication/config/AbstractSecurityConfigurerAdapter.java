@@ -34,11 +34,11 @@ public abstract class AbstractSecurityConfigurerAdapter extends WebSecurityConfi
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private SecurityContextSetter securityContextSetter;
+    private SecurityContextMutator securityContextMutator;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider, securityContextSetter);
+        return new JwtAuthenticationFilter(jwtHeaderParser, jwtTokenProvider, securityContextMutator);
     }
 
     /**
