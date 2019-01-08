@@ -12,6 +12,7 @@ public class BasicUser {
     private String email;
     private String firstName;
     private String lastName;
+    private IdentityProvider identityProvider;
 
     public BasicUser() {
     }

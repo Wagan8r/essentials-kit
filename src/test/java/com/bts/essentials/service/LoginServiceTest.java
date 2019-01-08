@@ -28,7 +28,7 @@ class UsersServiceImpl implements UsersService {
 
     @Override
     public User getOrCreateUser(BasicUser basicUser) {
-        return new User(UUID.randomUUID(), basicUser.getEmail(), basicUser.getFirstName(), basicUser.getLastName());
+        return new User(UUID.randomUUID(), basicUser.getEmail(), basicUser.getFirstName(), basicUser.getLastName(), basicUser.getIdentityProvider());
     }
 }
 

@@ -1,9 +1,9 @@
 package com.bts.essentials.authentication;
 
+import com.bts.essentials.model.IdentityProvider;
 import com.bts.essentials.model.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -17,6 +17,7 @@ public class JwtTokenProvider {
     private static final String EMAIL = "email";
     private static final String FIRST_NAME = "first_name";
     private static final String LAST_NAME = "last_name";
+    private static final String IDENTITY_PROVIDER = "identity_provider";
 
     @Value("${essentials.jwt.secret}")
     private String jwtSecret;
@@ -32,6 +33,7 @@ public class JwtTokenProvider {
                 .claim(EMAIL, user.getEmail())
                 .claim(FIRST_NAME, user.getFirstName())
                 .claim(LAST_NAME, user.getLastName())
+                .claim(IDENTITY_PROVIDER, user.getIdentityProvider())
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -44,7 +46,11 @@ public class JwtTokenProvider {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(jwt)
                 .getBody();
-        return new User(UUID.fromString(claims.getSubject()), String.valueOf(claims.get(EMAIL)), String.valueOf(claims.get(FIRST_NAME)), String.valueOf(claims.get(LAST_NAME)));
+        return new User(UUID.fromString(claims.getSubject()),
+                String.valueOf(claims.get(EMAIL)),
+                String.valueOf(claims.get(FIRST_NAME)),
+                String.valueOf(claims.get(LAST_NAME)),
+                IdentityProvider.valueOf(String.valueOf(claims.get(IDENTITY_PROVIDER))));
     }
 
     protected void validateJwt(String jwt) {

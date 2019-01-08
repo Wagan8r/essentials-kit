@@ -52,6 +52,7 @@ public class JwtTokenProviderTest extends BaseIntegrationTest {
         assertEquals(user.getEmail(), jwtUser.getEmail());
         assertEquals(user.getFirstName(), jwtUser.getFirstName());
         assertEquals(user.getLastName(), jwtUser.getLastName());
+        assertEquals(user.getIdentityProvider(), jwtUser.getIdentityProvider());
     }
 
     @Test

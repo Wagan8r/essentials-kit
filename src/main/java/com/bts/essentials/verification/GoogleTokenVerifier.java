@@ -1,6 +1,7 @@
 package com.bts.essentials.verification;
 
 import com.bts.essentials.model.BasicUser;
+import com.bts.essentials.model.IdentityProvider;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -66,6 +67,6 @@ public class GoogleTokenVerifier implements TokenVerifier {
     }
 
     protected BasicUser createUser(Payload payload) {
-        return new BasicUser(payload.getEmail(), (String) payload.get("given_name"), (String) payload.get("family_name"));
+        return new BasicUser(payload.getEmail(), (String) payload.get("given_name"), (String) payload.get("family_name"), IdentityProvider.GOOGLE);
     }
 }
