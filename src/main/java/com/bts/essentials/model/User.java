@@ -11,8 +11,8 @@ import java.util.UUID;
 public class User extends BasicUser {
     private UUID id;
 
-    public User(UUID id, String email, String firstName, String lastName) {
-        super(email, firstName, lastName);
+    public User(UUID id, String email, String firstName, String lastName, IdentityProvider identityProvider) {
+        super(email, firstName, lastName, identityProvider);
         this.id = id;
     }
 }

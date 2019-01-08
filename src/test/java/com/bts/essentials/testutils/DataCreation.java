@@ -1,6 +1,7 @@
 package com.bts.essentials.testutils;
 
 import com.bts.essentials.authentication.UserAuthentication;
+import com.bts.essentials.model.IdentityProvider;
 import com.bts.essentials.model.User;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
@@ -19,7 +20,7 @@ public class DataCreation {
     }
 
     public static User createUser() {
-        return new User(UUID.randomUUID(), "nerfherder@bts.com", "Han", "Solo");
+        return new User(UUID.randomUUID(), "nerfherder@bts.com", "Han", "Solo", IdentityProvider.GOOGLE);
     }
 
     public static Payload createPayload() {
