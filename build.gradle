@@ -8,12 +8,8 @@ buildscript {
 }
 
 plugins {
-    id 'io.franzbecker.gradle-lombok' version '1.11'
+    id 'io.franzbecker.gradle-lombok' version '1.14'
     id 'java'
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.5.1'
 }
 
 apply plugin: 'java'
@@ -24,7 +20,7 @@ apply plugin: 'jacoco'
 group 'com.bts'
 
 lombok {
-    version = "1.16.20"
+    version = "1.18.4"
     sha256 = ""
 }
 
@@ -37,8 +33,8 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
@@ -66,7 +62,7 @@ sourceSets {
 }
 
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.2"
     reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
