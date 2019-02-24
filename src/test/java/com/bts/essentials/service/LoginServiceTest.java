@@ -13,24 +13,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-@Service
-class UsersServiceImpl implements UsersService {
-
-    @Override
-    public User getOrCreateUser(BasicUser basicUser) {
-        return new User(UUID.randomUUID(), basicUser.getEmail(), basicUser.getFirstName(), basicUser.getLastName(), basicUser.getIdentityProvider());
-    }
-}
 
 /**
  * Created by wagan8r on 10/23/18.
