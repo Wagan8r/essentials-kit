@@ -3,7 +3,6 @@ package com.bts.essentials.authentication.config;
 import com.bts.essentials.BaseMvcTest;
 import com.bts.essentials.authentication.JwtHeaderParser;
 import com.bts.essentials.authentication.JwtTokenProvider;
-import com.bts.essentials.authentication.advice.ExcludeJwtControllerAdvice;
 import com.bts.essentials.model.User;
 import org.apache.http.HttpHeaders;
 import org.junit.Before;
@@ -11,14 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import static com.bts.essentials.testutils.DataCreation.createUser;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -26,38 +17,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-@Component
-class TestAbstractSecurityConfigurerAdapter extends AbstractSecurityConfigurerAdapter {
-    @Override
-    protected ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry configureAuthorizeRequests(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
-        return expressionInterceptUrlRegistry.antMatchers("/test/path").permitAll();
-    }
-
-    @Override
-    protected void ignoreRequests(WebSecurity.IgnoredRequestConfigurer ignoredRequestConfigurer) {
-        ignoredRequestConfigurer.antMatchers("/unsecured/resource");
-    }
-}
-
-@Controller
-class TestController {
-    @RequestMapping(value = "/unsecured/resource", method = RequestMethod.GET)
-    public ResponseEntity<String> unsecuredEndpoint() {
-        return ResponseEntity.ok("You got in!");
-    }
-
-    @RequestMapping(value = "/secured/resource", method = RequestMethod.GET)
-    public ResponseEntity<String> securedEndpoint() {
-        return ResponseEntity.ok("You had a jwt");
-    }
-
-    @RequestMapping(value = "/excluded/resource", method = RequestMethod.GET)
-    @ExcludeJwtControllerAdvice
-    public ResponseEntity<String> excludedEndpoint() {
-        return ResponseEntity.ok("Didn't need a jwt");
-    }
-}
 
 /**
  * Created by wagan8r on 8/19/18.
