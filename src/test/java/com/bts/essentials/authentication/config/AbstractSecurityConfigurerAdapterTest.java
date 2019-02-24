@@ -64,7 +64,7 @@ public class AbstractSecurityConfigurerAdapterTest extends BaseMvcTest {
 
     @Test
     public void filterTestPathNoJwt() throws Exception {
-        //TODO: make this expect a 400 level error or something
+        //make this expect a 400 level error or something
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("No Authorization header provided");
         mockMvc.perform(get("/secured/resource"));
