@@ -1,12 +1,5 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
     id 'io.franzbecker.gradle-lombok' version '3.2.0'
-    id 'java'
 }
 
 apply plugin: 'java'
@@ -33,13 +26,15 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
-    compile platform(group: 'org.springframework.boot', name: 'spring-boot-dependencies', version:springBootVersion)
+    compile platform(group: 'org.springframework.boot', name: 'spring-boot-dependencies', version: springBootVersion)
+
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     compile group: 'com.google.guava', name: 'guava', version: guavaVersion
     compile group: 'com.google.api-client', name: 'google-api-client', version: googleApiClientVersion
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: jjwtVersion
+
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
 }
