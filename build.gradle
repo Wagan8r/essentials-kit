@@ -2,9 +2,6 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
-    }
 }
 
 plugins {
@@ -14,7 +11,6 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: "io.spring.dependency-management"
 apply plugin: 'jacoco'
 
 group 'com.bts'
@@ -37,6 +33,7 @@ sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
+    compile platform(group: 'org.springframework.boot', name: 'spring-boot-dependencies', version:springBootVersion)
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
@@ -45,12 +42,6 @@ dependencies {
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: jjwtVersion
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
-    }
 }
 
 sourceSets {
