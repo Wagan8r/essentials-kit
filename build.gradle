@@ -7,15 +7,11 @@ apply plugin: 'idea'
 apply plugin: 'jacoco'
 
 group 'com.bts'
+version "${major}.${minor}.${patch}"
 
 lombok {
     version = "1.18.4"
     sha256 = ""
-}
-
-jar {
-    baseName = 'essentials-kit'
-    version = "${major}.${minor}.${patch}"
 }
 
 repositories {
