@@ -1,0 +1,21 @@
+{
+  "name": "essentials-kit",
+  "version": "0.0.0-dev",
+  "description": "The library that is responsible for handling common security concerns",
+  "scripts": {
+    "release": "semantic-release --debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wagan8r/essentials-kit.git"
+  },
+  "author": "Andrew Wagner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wagan8r/essentials-kit/issues"
+  },
+  "homepage": "https://github.com/Wagan8r/essentials-kit#readme",
+  "devDependencies": {
+    "semantic-release": "17.0.4"
+  }
+}
