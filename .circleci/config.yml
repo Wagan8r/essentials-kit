@@ -86,6 +86,8 @@ jobs:
     steps:
       - checkout
       - run: npm i
+      - run: echo "export GH_TOKEN=$GITHUB_ACCESS_TOKEN" >> $BASH_ENV
+      - run: echo "export NPM_TOKEN=$GITHUB_ACCESS_TOKEN" >> $BASH_ENV
       - run: npm run release
       - run: echo "export RELEASE_VERSION=$(node -p 'require("./package").version')" >> $BASH_ENV
       - run: cat $BASH_ENV
