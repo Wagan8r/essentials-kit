@@ -2,19 +2,62 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-version: 2
+version: 2.1
+
+executors:
+  java:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    working_directory: ~/repo
+  node:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/repo
+
+commands:
+  save-cache:
+    steps:
+      - save_cache:
+          paths:
+            - ~/.gradlew
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+  restore-cache:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+  gradle-deps:
+    steps:
+      - run: ./gradlew dependencies
+  init-gradle:
+    steps:
+      - checkout
+      - restore-cache
+      - gradle-deps
+      - save-cache
+  attach-workspace:
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run: cat ~/workspace/release-version
+  save-release-version-to-workspace:
+    parameters:
+      release-version:
+        type: string
+    steps:
+      - run: mkdir -p ~/workspace
+      - run: echo << parameters.release-version >> > ~/workspace/release-version
+      - run: cat ~/workspace/release-version
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - release-version
+
 jobs:
   build:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:11-jdk
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    working_directory: ~/repo
 
     environment:
       # Customize the JVM maximum heap limit
@@ -22,21 +65,7 @@ jobs:
       TERM: dumb
 
     steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: ./gradlew dependencies
-
-      - save_cache:
-          paths:
-            - ~/.gradlew
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - init-gradle
 
       # run tests!
       - run: ./gradlew test
@@ -52,3 +81,36 @@ jobs:
           path: ~/junit
       - store_artifacts:
           path: ~/junit
+  create-version:
+    executor: node
+    steps:
+      - checkout
+      - run: npm i
+      - run: npm run release
+      - run: echo "export RELEASE_VERSION=$(node -p 'require("./package").version')" >> $BASH_ENV
+      - run: cat $BASH_ENV
+      - save-release-version-to-workspace:
+          release-version: $RELEASE_VERSION
+  build-and-publish:
+    executor: java
+    steps:
+      - init-gradle
+      - attach-workspace
+      - run: echo "export RELEASE_VERSION=$(cat ~/workspace/release-version)" >> $BASH_ENV
+      - run: cat $BASH_ENV
+      - run: ./gradlew publish
+
+workflows:
+  version: 2.1
+  build-and-deploy:
+    jobs:
+      - build
+      - create-version:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - build-and-publish:
+          requires:
+            - create-version
