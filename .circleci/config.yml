@@ -57,7 +57,7 @@ commands:
       version:
         type: string
     steps:
-      - run: echo "<< parameters.version >> "
+      - run: echo "<< parameters.version >>"
       - when:
           condition:
             - not:
@@ -118,7 +118,7 @@ jobs:
       - run: echo "export RELEASE_VERSION=$(cat ~/workspace/release-version)" >> $BASH_ENV
       - run: cat $BASH_ENV
       - publish:
-          version: $RELEASE_VERSION
+          version: "$RELEASE_VERSION"
 
 workflows:
   version: 2.1
