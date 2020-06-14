@@ -52,6 +52,23 @@ commands:
           root: ~/workspace
           paths:
             - release-version
+  publish:
+    parameters:
+      version:
+        type: string
+    steps:
+      - when:
+          condition:
+            - not:
+              equal: [ "0.0.0-dev", << parameters.version >> ]
+          steps:
+            - init-gradle
+            - run: ./gradlew publish
+      - unless:
+          condition:
+            equal: [ "0.0.0-dev", << parameters.version >> ]
+            steps:
+              - run: echo "No changes to publish."
 
 jobs:
   build:
@@ -96,21 +113,11 @@ jobs:
   build-and-publish:
     executor: java
     steps:
-      - init-gradle
       - attach-workspace
       - run: echo "export RELEASE_VERSION=$(cat ~/workspace/release-version)" >> $BASH_ENV
       - run: cat $BASH_ENV
-      - when:
-          condition:
-            - not:
-              equal: [ 0.0.0-dev, $RELEASE_VERSION ]
-          steps:
-            - run: ./gradlew publish
-      - unless:
-          condition:
-            equal: [ 0.0.0-dev, $RELEASE_VERSION ]
-            steps:
-              - run: echo "No changes to publish."
+      - publish:
+          version: $RELEASE_VERSION
 
 workflows:
   version: 2.1
