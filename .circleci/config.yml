@@ -126,6 +126,6 @@ workflows:
             branches:
               only: master
       - build-and-publish:
-          version: $(cat ~/workspace/release-version)
+          version: "$(cat ~/workspace/release-version)"
           requires:
             - create-version
