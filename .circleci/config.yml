@@ -99,6 +99,7 @@ jobs:
       version:
         type: string
     steps:
+      - run: echo "<< parameters.version >>"
       - when:
           condition:
             - not:
