@@ -60,16 +60,17 @@ commands:
       - run: echo "<< parameters.version >>"
       - when:
           condition:
-            - not:
+            not:
               equal: [ "0.0.0-dev", << parameters.version >> ]
           steps:
+            - run: echo "Publishing << parameters.version >>"
             - init-gradle
             - run: ./gradlew publish
       - unless:
           condition:
             equal: [ "0.0.0-dev", << parameters.version >> ]
-            steps:
-              - run: echo "No changes to publish."
+          steps:
+            - run: echo "No changes to publish."
 
 jobs:
   build:
@@ -118,7 +119,7 @@ jobs:
       - run: echo "export RELEASE_VERSION=$(cat ~/workspace/release-version)" >> $BASH_ENV
       - run: cat $BASH_ENV
       - publish:
-          version: "$RELEASE_VERSION"
+          version: "$(cat $RELEASE_VERSION)"
 
 workflows:
   version: 2.1
