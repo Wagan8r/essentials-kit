@@ -119,7 +119,7 @@ jobs:
       - run: echo "export RELEASE_VERSION=$(cat ~/workspace/release-version)" >> $BASH_ENV
       - run: cat $BASH_ENV
       - publish:
-          version: "$(cat $RELEASE_VERSION)"
+          version: $(cat $RELEASE_VERSION)
 
 workflows:
   version: 2.1
