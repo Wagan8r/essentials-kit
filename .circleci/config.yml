@@ -60,11 +60,10 @@ commands:
       - run:
           name: "Check version"
           command: |
-            echo "<< parameters.version >>"
             VERSION=$(echo "<< parameters.version >>")
-            echo $VERSION
+            echo "Version: $VERSION"
             if [[ $VERSION == "0.0.0-dev" ]] ; then
-                echo "No changes to publish."
+                echo "No changes to publish. No new version will be published."
                 circleci-agent step halt
             fi
       - run: echo "Publishing << parameters.version >>"
