@@ -61,7 +61,7 @@ commands:
           name: "Check version"
           command: |
             echo "<< parameters.version >>"
-            VERSION = echo "<< parameters.version >>"
+            VERSION=$(echo "<< parameters.version >>")
             echo $VERSION
             if [[ $VERSION -eq "0.0.0-dev" ]] ; then
                 echo "No changes to publish."
@@ -118,7 +118,7 @@ jobs:
       - run: echo "export RELEASE_VERSION=$(cat ~/workspace/release-version)" >> $BASH_ENV
       - run: cat $BASH_ENV
       - publish:
-          version: echo $RELEASE_VERSION
+          version: $RELEASE_VERSION
 
 workflows:
   version: 2.1
