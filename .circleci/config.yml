@@ -57,20 +57,19 @@ commands:
       version:
         type: string
     steps:
-      - run: echo "<< parameters.version >>"
-      - when:
-          condition:
-            not:
-              equal: [ "0.0.0-dev", << parameters.version >> ]
-          steps:
-            - run: echo "Publishing << parameters.version >>"
-            - init-gradle
-            - run: ./gradlew publish
-      - unless:
-          condition:
-            equal: [ "0.0.0-dev", << parameters.version >> ]
-          steps:
-            - run: echo "No changes to publish."
+      - run:
+          name: "Check version"
+          command: |
+            echo "<< parameters.version >>"
+            VERSION = echo "<< parameters.version >>"
+            echo $VERSION
+            if [[ $VERSION -eq "0.0.0-dev" ]] ; then
+                echo "No changes to publish."
+                circleci-agent step halt
+            fi
+      - run: echo "Publishing << parameters.version >>"
+      - init-gradle
+      - run: ./gradlew publish
 
 jobs:
   build:
