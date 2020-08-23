@@ -63,7 +63,7 @@ commands:
             echo "<< parameters.version >>"
             VERSION=$(echo "<< parameters.version >>")
             echo $VERSION
-            if [[ $VERSION -eq "0.0.0-dev" ]] ; then
+            if [[ $VERSION == "0.0.0-dev" ]] ; then
                 echo "No changes to publish."
                 circleci-agent step halt
             fi
