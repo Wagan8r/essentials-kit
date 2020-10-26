@@ -23,6 +23,7 @@ public class SecurityContextMutator {
         UserAuthentication userAuthentication = new UserAuthentication();
         userAuthentication.setUserPrincipal(user);
         userAuthentication.setAuthenticated(true);
+        userAuthentication.setAuthorities(user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(userAuthentication);
     }
 
@@ -36,8 +37,6 @@ public class SecurityContextMutator {
         User user = null;
         if (authentication instanceof UserAuthentication) {
             user = ((UserAuthentication) authentication).getUserPrincipal();
-        } else if (authentication != null) {
-            throw new IllegalStateException("Invalid Authentication has been set in the security context");
         }
         return user;
     }

@@ -35,7 +35,7 @@ public class JwtTokenProviderTest extends BaseIntegrationTest {
 
     @Before
     public void before() {
-        user = createUser();
+        user = createUser(null);
     }
 
     @Test
@@ -53,6 +53,21 @@ public class JwtTokenProviderTest extends BaseIntegrationTest {
         assertEquals(user.getFirstName(), jwtUser.getFirstName());
         assertEquals(user.getLastName(), jwtUser.getLastName());
         assertEquals(user.getIdentityProvider(), jwtUser.getIdentityProvider());
+        assertEquals(user.getAuthorities(), jwtUser.getAuthorities());
+    }
+
+    @Test
+    public void getUserWithRole() {
+        user = createUser("TEST_ROLE");
+        String jwt = jwtTokenProvider.getToken(user);
+        User jwtUser = jwtTokenProvider.getUser(jwt);
+        assertEquals(user.getId(), jwtUser.getId());
+        assertEquals(user.getEmail(), jwtUser.getEmail());
+        assertEquals(user.getFirstName(), jwtUser.getFirstName());
+        assertEquals(user.getLastName(), jwtUser.getLastName());
+        assertEquals(user.getIdentityProvider(), jwtUser.getIdentityProvider());
+        assertEquals(user.getAuthorities(), jwtUser.getAuthorities());
+        assertEquals("TEST_ROLE", jwtUser.getAuthorities().get(0).getAuthority());
     }
 
     @Test

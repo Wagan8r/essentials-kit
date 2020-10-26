@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import static com.bts.essentials.testutils.DataCreation.createUser;
 import static com.bts.essentials.testutils.DataCreation.createUserAuthentication;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 /**
  * Created by wagan8r on 10/14/18.
@@ -33,7 +32,7 @@ public class SecurityContextMutatorTest extends BaseIntegrationTest {
 
     @Test
     public void setAuthentication() {
-        User user = createUser();
+        User user = createUser(null);
         securityContextMutator.setAuthentication(user);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User principal = (User) authentication.getPrincipal();
@@ -53,14 +52,5 @@ public class SecurityContextMutatorTest extends BaseIntegrationTest {
     public void getAuthenticationUserNoAuthentication() {
         User authenticationUser = securityContextMutator.getAuthenticationUser();
         assertEquals(null, authenticationUser);
-    }
-
-    @Test
-    public void getAuthenticationUserInvalidAuthentication() {
-        Authentication authentication = mock(Authentication.class);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        thrown.expect(IllegalStateException.class);
-        thrown.expectMessage("Invalid Authentication has been set in the security context");
-        securityContextMutator.getAuthenticationUser();
     }
 }
