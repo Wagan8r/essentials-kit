@@ -37,7 +37,7 @@ public class JwtAuthenticationFilterTest extends BaseIntegrationTest {
 
     @Test
     public void doFilterInternal() throws Exception {
-        User user = createUser();
+        User user = createUser(null);
         String jwt = jwtTokenProvider.getToken(user);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
         HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);

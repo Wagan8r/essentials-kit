@@ -53,7 +53,7 @@ public class AbstractSecurityConfigurerAdapterTest extends BaseMvcTest {
 
     @Test
     public void filterTestPath() throws Exception {
-        User user = createUser();
+        User user = createUser(null);
         String jwt = jwtTokenProvider.getToken(user);
         mockMvc.perform(get("/secured/resource").header(HttpHeaders.AUTHORIZATION, String.format("%s %s", JwtHeaderParser.BEARER, jwt)))
                 .andDo(print())
@@ -72,7 +72,7 @@ public class AbstractSecurityConfigurerAdapterTest extends BaseMvcTest {
 
     @Test
     public void jwtAdviceSetsAuthorizationHeader() throws Exception {
-        User user = createUser();
+        User user = createUser(null);
         String jwt = jwtTokenProvider.getToken(user);
         mockMvc.perform(get("/excluded/resource").header(HttpHeaders.AUTHORIZATION, String.format("%s %s", JwtHeaderParser.BEARER, jwt)))
                 .andDo(print())
