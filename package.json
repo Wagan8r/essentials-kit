@@ -16,6 +16,6 @@
   },
   "homepage": "https://github.com/Wagan8r/essentials-kit#readme",
   "devDependencies": {
-    "semantic-release": "17.2.3"
+    "semantic-release": "17.4.7"
   }
 }
